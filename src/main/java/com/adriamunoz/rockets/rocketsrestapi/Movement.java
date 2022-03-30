@@ -5,14 +5,14 @@ public class Movement {
     public static final int DECELERATE = 2;
 
     private int type;
-    private int movementXTimes;
+    private int times;
 
     public Movement() {
     }
 
     public Movement(int type, int movementXTimes) {
         this.type = type;
-        this.movementXTimes = movementXTimes;
+        this.times = movementXTimes;
     }
 
     public int getType() {
@@ -23,11 +23,11 @@ public class Movement {
         this.type = type;
     }
 
-    public int getMovementXTimes() {
-        return movementXTimes;
+    public int getTimes() {
+        return times;
     }
 
-    public void setMovementXTimes(int movementXTimes) {
-        this.movementXTimes = movementXTimes;
+    public void setTimes(int times) {
+        this.times = times;
     }
 }

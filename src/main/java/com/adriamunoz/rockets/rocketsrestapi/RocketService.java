@@ -15,6 +15,11 @@ public class RocketService {
     private PropellerRepository propellerRepository;
 
 
+    public RocketService(RocketRepository rocketRepository, PropellerRepository propellerRepository) {
+        this.rocketRepository = rocketRepository;
+        this.propellerRepository = propellerRepository;
+
+    }
     public Rocket createRocket(Rocket rocketToCreate) {
         this.rocketRepository.save(rocketToCreate);
         return rocketToCreate;
@@ -31,6 +36,10 @@ public class RocketService {
 
     public Rocket findRocket(String rocketId) throws Exception {
         return rocketRepository.findById(rocketId).get();
+    }
+
+    public Propeller findPropeller(String propellerId) throws Exception {
+        return propellerRepository.findById(propellerId).get();
     }
 
     public List<Propeller> getPropellers(String rocketId) throws Exception {
@@ -53,7 +62,7 @@ public class RocketService {
 
     public void removeAllPropellers(String rocketId) throws Exception {
         Rocket rocket = findRocket(rocketId);
-        propellerRepository.deleteAllByRestaurant(rocket);
+        propellerRepository.deleteAllByRocket(rocket);
     }
 
     public void removePropeller(String rocketId, String propellerId) throws Exception {
@@ -70,28 +79,33 @@ public class RocketService {
 
     }
 
+    public Propeller updatePropellerMaxPower(String propellerId, Propeller data) throws Exception {
+        Propeller propeller = findPropeller(propellerId);
+        propeller.setMaxPower(data.getMaxPower());
+        propellerRepository.save(propeller);
+        return propeller;
+
+    }
+
+    public Propeller createPropeller(String rocketId,Propeller propellerToCreate) throws Exception {
+        Rocket rocket = findRocket(rocketId);
+        this.rocketRepository.save(rocket);
+        this.propellerRepository.save(propellerToCreate);
+        return propellerToCreate;
+
+    }
+
     public Rocket move(String rocketId, Movement movement) throws Exception {
         Rocket rocket = findRocket(rocketId);
 
-        if (rocket.getPropellers().isEmpty()) throw new Exception("El coet no te propellers");
-
-        for (int i = 0; i < movement.getMovementXTimes(); i++) {
+        for (int i = 0; i < movement.getTimes(); i++) {
             for (Propeller propeller : rocket.getPropellers()) {
                 if (movement.getType() == Movement.ACCELERATE) propeller.increasePower();
                 else if (movement.getType() == Movement.DECELERATE) propeller.decreasePower();
                 propellerRepository.save(propeller);
             }
         }
-
         return rocketRepository.save(rocket);
-
-    }
-
-    private static void assignPowerRocket1(Rocket rocket) throws Exception {
-        int[] powers = {10, 30, 80};
-        for (int power : powers) {
-            rocket.addPropeller(power);
-        }
     }
 
 

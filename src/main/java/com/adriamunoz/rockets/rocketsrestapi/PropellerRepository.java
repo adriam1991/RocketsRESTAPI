@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface PropellerRepository extends CrudRepository<Propeller, String> {
     @Transactional
-    List<Propeller> deleteAllByRestaurant(Rocket rocket);
+    List<Propeller> deleteAllByRocket(Rocket rocket);
 }
 
 

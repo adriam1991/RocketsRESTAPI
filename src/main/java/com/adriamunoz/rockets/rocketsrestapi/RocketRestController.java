@@ -22,12 +22,15 @@ public class RocketRestController {
         return rocketService.move(rocketId, movement);
     }
 
-//    @PostMapping("/rockets/{rocketId}/propellers")
-//    public Propeller addPropeller(@PathVariable String rocketId, @RequestBody Propeller propeller) throws Exception {
-//        return rocketService.addPropeller(rocketId, propeller);
-//    }
-//
-//    @PutMapping("/rockets/{rocketId}/propellers/{propellerId}")
+   @PostMapping("/rockets/{rocketId}/propellers")
+  public Propeller createPropeller(@PathVariable String rocketId, @RequestBody Propeller propellerToCreate) throws Exception {
+     return rocketService.createPropeller(rocketId,propellerToCreate);
+ }
+
+ @PutMapping("/rockets/{rocketId}/propellers/{propellerId}")
+ public void updatePropellerMaxPower(@PathVariable String propellerId,@RequestBody Propeller propellerToUpdate) throws Exception {
+     rocketService.updatePropellerMaxPower(propellerId, propellerToUpdate);
+ }
 
 
     @PutMapping("/rockets/{rocketId}")
