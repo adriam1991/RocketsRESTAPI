@@ -39,20 +39,6 @@ public class RocketService {
         return rocketRepository.findById(rocketId).get();
     }
 
-    //
-    public Propeller findPropeller(Long propellerId) throws Exception {
-        return propellerRepository.findById(propellerId).get();
-    }
-//
-    public List<Propeller> getPropellers(Long rocketId) throws Exception {
-        Rocket rocket = findRocket(rocketId);
-        List<Propeller> propellers = rocket.getPropellers();
-        return propellers;
-    }
-//
-    public Propeller getPropeller(Long rocketId, Long propellerId) throws Exception {
-        return propellerRepository.findById(propellerId).get();
-    }
 
     public void removeAllRockets() {
         rocketRepository.deleteAll();
@@ -61,17 +47,7 @@ public class RocketService {
     public void removeRocket(Long rocketId) {
         rocketRepository.deleteById(rocketId);
     }
-//
-    public void removeAllPropellers(Long rocketId) throws Exception {
-        Rocket rocket = findRocket(rocketId);
-        propellerRepository.deleteAllByRocket(rocket);
-    }
-//
-    public void removePropeller(Long rocketId, Long propellerId) throws Exception {
-        Rocket rocket = findRocket(rocketId);
-        rocketRepository.deleteById(propellerId);
 
-    }
 
     public Rocket updateRocket(Long rocketId, Rocket data) throws Exception {
         Rocket rocket = findRocket(rocketId);
@@ -80,15 +56,8 @@ public class RocketService {
         return rocket;
 
     }
-//
-    public Propeller updatePropellerMaxPower(Long propellerId, Propeller data) throws Exception {
-        Propeller propeller = findPropeller(propellerId);
-        propeller.setMaxPower(data.getMaxPower());
-        propellerRepository.save(propeller);
-        return propeller;
 
-    }
-//
+
     public Propeller createPropeller(Long rocketId, Propeller propellerToCreate) throws Exception {
         Rocket rocket = findRocket(rocketId);
         propellerToCreate.setRocket(rocket);
@@ -106,6 +75,40 @@ public class RocketService {
         }
         propellerRepository.saveAll(rocket.getPropellers());
         return rocket;
+    }
+
+
+    public Propeller findPropeller(Long propellerId) throws Exception {
+        return propellerRepository.findById(propellerId).get();
+    }
+
+    public List<Propeller> getPropellers(Long rocketId) throws Exception {
+        Rocket rocket = findRocket(rocketId);
+        List<Propeller> propellers = rocket.getPropellers();
+        return propellers;
+    }
+
+    public Propeller getPropeller(Long rocketId, Long propellerId) throws Exception {
+        return propellerRepository.findById(propellerId).get();
+    }
+
+
+    public void removeAllPropellers(Long rocketId) throws Exception {
+        Rocket rocket = findRocket(rocketId);
+        propellerRepository.deleteAllByRocket(rocket);
+    }
+
+    public void removePropeller(Long rocketId, Long propellerId) throws Exception {
+        Rocket rocket = findRocket(rocketId);
+        rocketRepository.deleteById(propellerId);
+
+    }
+    public Propeller updatePropellerMaxPower(Long propellerId, Propeller data) throws Exception {
+        Propeller propeller = findPropeller(propellerId);
+        propeller.setMaxPower(data.getMaxPower());
+        propellerRepository.save(propeller);
+        return propeller;
+
     }
 
 }

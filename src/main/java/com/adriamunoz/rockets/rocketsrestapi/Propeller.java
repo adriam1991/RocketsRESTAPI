@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.util.UUID;
 
-@Entity(name="propellers")
+@Entity
 public class Propeller {
 
     @Id
@@ -15,7 +15,7 @@ public class Propeller {
     private Long id;
     private int currentPower = 0;
     private int maxPower;
-    private static final int POWER_STEP =10;
+    private static final int POWER_STEP = 10;
 
 
     @ManyToOne
