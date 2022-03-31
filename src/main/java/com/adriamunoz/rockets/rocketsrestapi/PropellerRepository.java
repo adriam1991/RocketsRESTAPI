@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
-public interface PropellerRepository extends CrudRepository<Propeller, String> {
+public interface PropellerRepository extends CrudRepository<Propeller, Long> {
     @Transactional
     List<Propeller> deleteAllByRocket(Rocket rocket);
 }

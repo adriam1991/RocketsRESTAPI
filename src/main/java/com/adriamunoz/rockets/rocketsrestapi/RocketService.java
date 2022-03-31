@@ -20,6 +20,7 @@ public class RocketService {
         this.propellerRepository = propellerRepository;
 
     }
+
     public Rocket createRocket(Rocket rocketToCreate) {
         this.rocketRepository.save(rocketToCreate);
         return rocketToCreate;
@@ -34,21 +35,22 @@ public class RocketService {
         return rockets;
     }
 
-    public Rocket findRocket(String rocketId) throws Exception {
+    public Rocket findRocket(Long rocketId) throws Exception {
         return rocketRepository.findById(rocketId).get();
     }
 
-    public Propeller findPropeller(String propellerId) throws Exception {
+    //
+    public Propeller findPropeller(Long propellerId) throws Exception {
         return propellerRepository.findById(propellerId).get();
     }
-
-    public List<Propeller> getPropellers(String rocketId) throws Exception {
+//
+    public List<Propeller> getPropellers(Long rocketId) throws Exception {
         Rocket rocket = findRocket(rocketId);
         List<Propeller> propellers = rocket.getPropellers();
         return propellers;
     }
-
-    public Propeller getPropeller(String rocketId, String propellerId) throws Exception {
+//
+    public Propeller getPropeller(Long rocketId, Long propellerId) throws Exception {
         return propellerRepository.findById(propellerId).get();
     }
 
@@ -56,57 +58,54 @@ public class RocketService {
         rocketRepository.deleteAll();
     }
 
-    public void removeRocket(String rocketId) {
+    public void removeRocket(Long rocketId) {
         rocketRepository.deleteById(rocketId);
     }
-
-    public void removeAllPropellers(String rocketId) throws Exception {
+//
+    public void removeAllPropellers(Long rocketId) throws Exception {
         Rocket rocket = findRocket(rocketId);
         propellerRepository.deleteAllByRocket(rocket);
     }
-
-    public void removePropeller(String rocketId, String propellerId) throws Exception {
+//
+    public void removePropeller(Long rocketId, Long propellerId) throws Exception {
         Rocket rocket = findRocket(rocketId);
         rocketRepository.deleteById(propellerId);
 
     }
 
-    public Rocket updateRocket(String rocketId, Rocket data) throws Exception {
+    public Rocket updateRocket(Long rocketId, Rocket data) throws Exception {
         Rocket rocket = findRocket(rocketId);
         rocket.setCode(data.getCode());
         rocketRepository.save(rocket);
         return rocket;
 
     }
-
-    public Propeller updatePropellerMaxPower(String propellerId, Propeller data) throws Exception {
+//
+    public Propeller updatePropellerMaxPower(Long propellerId, Propeller data) throws Exception {
         Propeller propeller = findPropeller(propellerId);
         propeller.setMaxPower(data.getMaxPower());
         propellerRepository.save(propeller);
         return propeller;
 
     }
-
-    public Propeller createPropeller(String rocketId,Propeller propellerToCreate) throws Exception {
+//
+    public Propeller createPropeller(Long rocketId, Propeller propellerToCreate) throws Exception {
         Rocket rocket = findRocket(rocketId);
-        this.rocketRepository.save(rocket);
+        propellerToCreate.setRocket(rocket);
         this.propellerRepository.save(propellerToCreate);
         return propellerToCreate;
 
     }
 
-    public Rocket move(String rocketId, Movement movement) throws Exception {
+    public Rocket moveRocket(Long rocketId, Movement movement) throws Exception {
         Rocket rocket = findRocket(rocketId);
 
         for (int i = 0; i < movement.getTimes(); i++) {
-            for (Propeller propeller : rocket.getPropellers()) {
-                if (movement.getType() == Movement.ACCELERATE) propeller.increasePower();
-                else if (movement.getType() == Movement.DECELERATE) propeller.decreasePower();
-                propellerRepository.save(propeller);
-            }
+            if (movement.getType() == Movement.ACCELERATE) rocket.acceleratePropellers();
+            else if (movement.getType() == Movement.DECELERATE) rocket.deceleratePropellers();
         }
-        return rocketRepository.save(rocket);
+        propellerRepository.saveAll(rocket.getPropellers());
+        return rocket;
     }
-
 
 }

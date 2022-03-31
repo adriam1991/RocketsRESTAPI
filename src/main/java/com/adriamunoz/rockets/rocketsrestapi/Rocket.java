@@ -1,20 +1,22 @@
 package com.adriamunoz.rockets.rocketsrestapi;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@Entity(name = "rockets")
-
+@Entity(name="rockets")
 public class Rocket {
 
     @Id
-    private String id = UUID.randomUUID().toString();
+    @GeneratedValue
+    private Long id;
     private String code;
 
 
@@ -24,17 +26,18 @@ public class Rocket {
 
     public Rocket() {
     }
+
     public Rocket(String code) throws Exception {
-         checkCode(code);
+        checkCode(code);
         this.code = code;
 
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -47,6 +50,18 @@ public class Rocket {
         this.code = code;
     }
 
+    public void acceleratePropellers() {
+        for (Propeller propeller : propellers) {
+            propeller.increasePower();
+        }
+    }
+
+    public void deceleratePropellers() {
+        for (Propeller propeller : propellers) {
+            propeller.decreasePower();
+        }
+    }
+
     public List<Propeller> getPropellers() {
         return propellers;
     }
@@ -55,5 +70,13 @@ public class Rocket {
         if (code.length() != 8) throw new Exception();
     }
 
+    @JsonProperty("currentPower")
+    public int currentPower() {
+        return propellers.stream()
+                .mapToInt(Propeller::getCurrentPower)
+                .sum();
+    }
+
 
 }
+

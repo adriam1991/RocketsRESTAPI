@@ -18,23 +18,23 @@ public class RocketRestController {
     }
 
     @PostMapping("/rockets/{rocketId}/movement")
-    public Rocket accelerateOrDecelerateRocket(@PathVariable String rocketId, @RequestBody Movement movement) throws Exception {
-        return rocketService.move(rocketId, movement);
+    public Rocket accelerateOrDecelerateRocket(@PathVariable Long rocketId, @RequestBody Movement movement) throws Exception {
+        return rocketService.moveRocket(rocketId, movement);
     }
 
-   @PostMapping("/rockets/{rocketId}/propellers")
-  public Propeller createPropeller(@PathVariable String rocketId, @RequestBody Propeller propellerToCreate) throws Exception {
-     return rocketService.createPropeller(rocketId,propellerToCreate);
- }
+    @PostMapping("/rockets/{rocketId}/propellers")
+    public Propeller createPropeller(@PathVariable Long rocketId, @RequestBody Propeller propellerToCreate) throws Exception {
+        return rocketService.createPropeller(rocketId, propellerToCreate);
+    }
 
- @PutMapping("/rockets/{rocketId}/propellers/{propellerId}")
- public void updatePropellerMaxPower(@PathVariable String propellerId,@RequestBody Propeller propellerToUpdate) throws Exception {
-     rocketService.updatePropellerMaxPower(propellerId, propellerToUpdate);
- }
+    @PutMapping("/rockets/{rocketId}/propellers/{propellerId}")
+    public void updatePropellerMaxPower(@PathVariable Long propellerId, @RequestBody Propeller propellerToUpdate) throws Exception {
+        rocketService.updatePropellerMaxPower(propellerId, propellerToUpdate);
+    }
 
 
     @PutMapping("/rockets/{rocketId}")
-    public void updateRocket(@PathVariable String rocketId, @RequestBody Rocket rocketToUpdate) throws Exception {
+    public void updateRocket(@PathVariable Long rocketId, @RequestBody Rocket rocketToUpdate) throws Exception {
         rocketService.updateRocket(rocketId, rocketToUpdate);
     }
 
@@ -45,17 +45,17 @@ public class RocketRestController {
     }
 
     @GetMapping("/rockets/{rocketId}")
-    public Rocket getRocket(@PathVariable String rocketId) throws Exception {
+    public Rocket getRocket(@PathVariable Long rocketId) throws Exception {
         return rocketService.findRocket(rocketId);
     }
 
     @GetMapping("/rockets/{rocketId}/propellers")
-    public List<Propeller> getPropellers(@PathVariable String rocketId) throws Exception {
+    public List<Propeller> getPropellers(@PathVariable Long rocketId) throws Exception {
         return rocketService.getPropellers(rocketId);
     }
 
     @GetMapping("/rockets/{rocketId}/propellers/{propellerId}")
-    public Propeller getPropeller(@PathVariable String rocketId, @PathVariable String propellerId) throws Exception {
+    public Propeller getPropeller(@PathVariable Long rocketId, @PathVariable Long propellerId) throws Exception {
         return rocketService.getPropeller(rocketId, propellerId);
     }
 
@@ -65,18 +65,18 @@ public class RocketRestController {
     }
 
     @DeleteMapping("/rockets/{rocketId}")
-    public void removeRocket(@PathVariable String rocketId) {
+    public void removeRocket(@PathVariable Long rocketId) {
         rocketService.removeRocket(rocketId);
     }
 
     @DeleteMapping("/rockets/{rocketId}/propellers")
-    public void removeAllPropellers(@PathVariable String rocketId) throws Exception {
+    public void removeAllPropellers(@PathVariable Long rocketId) throws Exception {
         rocketService.removeAllPropellers(rocketId);
     }
 
 
     @DeleteMapping("/rockets/{rocketId}/propellers/{propellerId}")
-    public void removePropeller(@PathVariable String rocketId, @PathVariable String propellerId) throws Exception {
+    public void removePropeller(@PathVariable Long rocketId, @PathVariable Long propellerId) throws Exception {
         rocketService.removePropeller(rocketId, rocketId);
 
     }

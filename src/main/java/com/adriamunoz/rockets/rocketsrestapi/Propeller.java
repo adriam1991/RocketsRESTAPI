@@ -4,19 +4,19 @@ package com.adriamunoz.rockets.rocketsrestapi;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.UUID;
 
-@Entity(name = "propellers")
+@Entity(name="propellers")
 public class Propeller {
 
     @Id
-    private String id = UUID.randomUUID().toString();
-    private int currentPower;
+    @GeneratedValue
+    private Long id;
+    private int currentPower = 0;
     private int maxPower;
+    private static final int POWER_STEP =10;
+
 
     @ManyToOne
     @JsonBackReference
@@ -27,16 +27,16 @@ public class Propeller {
 
     }
 
-    public Propeller(int maxPower,Rocket rocket) throws Exception {
+    public Propeller(int maxPower) throws Exception {
         checkMaxPower(maxPower);
         this.maxPower = maxPower;
-        this.rocket = rocket;
 
     }
 
     private void checkMaxPower(int maxPower) throws Exception {
         if (maxPower <= 0) throw new Exception("Potència no pot ser 0");
     }
+
     public void setCurrentPower(int currentPower) {
         this.currentPower = currentPower;
     }
@@ -54,24 +54,28 @@ public class Propeller {
         this.maxPower = maxPower;
     }
 
-    public String getId() {
-        return id;
+    public Rocket getRocket() {
+        return rocket;
     }
 
     public void setRocket(Rocket rocket) {
         this.rocket = rocket;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public void increasePower() {
-        this.currentPower += 10;
+        currentPower += POWER_STEP;
         if (currentPower > maxPower) {
             currentPower = maxPower;
         }
     }
 
     public void decreasePower() {
-        this.currentPower = currentPower - 10;
-        if (currentPower <= 0) {
+        currentPower -= POWER_STEP;
+        if (currentPower < 0) {
             currentPower = 0;
         }
     }

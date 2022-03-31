@@ -7,12 +7,10 @@ public class Movement {
     private int type;
     private int times;
 
-    public Movement() {
-    }
 
-    public Movement(int type, int movementXTimes) {
+    public Movement(int type, int times) {
         this.type = type;
-        this.times = movementXTimes;
+        this.times = times;
     }
 
     public int getType() {
